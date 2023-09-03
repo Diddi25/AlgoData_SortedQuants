@@ -3,40 +3,40 @@ import java.util.Random;
 
 class BorrowedBench {
 
-    private static void linear(int[] array, int[] indx) {
-        for (int i = 0; i < indx.length ; i++) {
-            Linear.search(array, indx[i]);
+    private static void linear(int[] array, int[] index) {
+        for (int i = 0; i < index.length ; i++) {
+            //Linear.search(array, index[i]);
         }
     }
 
 
-    private static void binary(int[] array, int[] indx) {
-        for (int i = 0; i < indx.length ; i++) {
-            Binary.search(array, indx[i]);
+    private static void binary(int[] array, int[] index) {
+        for (int i = 0; i < index.length ; i++) {
+            //Binary.search(array, index[i]);
         }
     }
 
 
-    private static int[] sorted(int n) {
-        Random rnd = new Random();
+    public static int[] sorted(int n) {
+        Random random = new Random();
         int[] array = new int[n];
-        int nxt = rnd.nextInt(10);
+        int next = random.nextInt(10);
 
         for (int i = 0; i < n ; i++) {
-            array[i] = nxt;
-            nxt += rnd.nextInt(10) + 1 ;
+            array[i] = next;
+            next += random.nextInt(10) + 1 ;
         }
         return array;
     }
 
 
-    private static int[] keys(int loop, int n) {
-        Random rnd = new Random();
-        int[] indx = new int[loop];
+    public static int[] keys(int loop, int n) {
+        Random random = new Random();
+        int[] index = new int[loop];
         for (int i = 0; i < loop ; i++) {
-            indx[i] = rnd.nextInt(n*5);
+            index[i] = random.nextInt(n*5);
         }
-        return indx;
+        return index;
     }
 
 
@@ -51,7 +51,7 @@ class BorrowedBench {
             int loop = 10000;
 
             int[] array = sorted(n);
-            int[] indx = keys(loop, n);
+            int[] index = keys(loop, n);
 
             System.out.printf("%8d", n);
 
@@ -61,7 +61,7 @@ class BorrowedBench {
 
             for (int i = 0; i < k; i++) {
                 long t0 = System.nanoTime();
-                linear(array, indx);
+                linear(array, index);
                 long t1 = System.nanoTime();
                 double t = (t1 - t0);
                 if (t < min)
@@ -74,14 +74,14 @@ class BorrowedBench {
 
             for (int i = 0; i < k; i++) {
                 long t0 = System.nanoTime();
-                binary(array, indx);
+                binary(array, index);
                 long t1 = System.nanoTime();
                 double t = (t1 - t0);
                 if (t < min)
                     min = t;
             }
 
-            System.out.printf("%8.0f\n" , (min/loop));
+            System.out.printf("%8.0f\n", (min/loop));
         }
     }
 }
