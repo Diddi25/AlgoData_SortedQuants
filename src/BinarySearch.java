@@ -7,10 +7,9 @@ public class BinarySearch {
         while (min <= max) {
             int middle = (min + max) / 2;
 
-            if(array[middle] == value) {
+            if (array[middle] == value) {
                 return true;
-            }
-            if(value < array[middle]) {
+            } else if (value < array[middle]) {
                 max = middle - 1;
             } else {
                 min = middle + 1;

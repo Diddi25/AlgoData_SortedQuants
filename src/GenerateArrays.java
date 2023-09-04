@@ -12,9 +12,12 @@ public class GenerateArrays {
 
     public static int[] generateSorted(int length) {
         int[] array = new int[length];
+        int next = new Random().nextInt(10);
         for (int i = 0; i < length; i++) {
-            array[i] += new Random().nextInt(10) + 1;
+            array[i] = next;
+            next += new Random().nextInt(10) + 1;
         }
         return array;
     }
+
 }
