@@ -5,7 +5,7 @@ class BorrowedBench {
 
     private static void linear(int[] array, int[] index) {
         for (int i = 0; i < index.length ; i++) {
-            //Linear.search(array, index[i]);
+            Linear.search(array, index[i]);
         }
     }
 
