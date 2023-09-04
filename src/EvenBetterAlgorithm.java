@@ -17,7 +17,6 @@ public class EvenBetterAlgorithm {
             } else {
                 min_array1 = mid_array1 + 1;
             }
-
         }
 
         return false;
