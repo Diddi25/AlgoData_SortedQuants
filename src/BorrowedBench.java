@@ -12,7 +12,7 @@ class BorrowedBench {
 
     private static void binary(int[] array, int[] index) {
         for (int i = 0; i < index.length ; i++) {
-            //Binary.search(array, index[i]);
+            BinarySearch.search(array, index[i]);
         }
     }
 
