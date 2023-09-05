@@ -2,6 +2,13 @@ import java.util.Random;
 
 class BorrowedBench {
 
+    private static float tries = 1000;
+    private static float min = Float.POSITIVE_INFINITY;
+
+    public static void main(String[] arg) {
+        benchmark();
+    }
+
     private static void linear(int[] array, int[] index) {
         for (int i = 0; i < index.length ; i++) {
             Linear.search(array, index[i]);
@@ -38,65 +45,69 @@ class BorrowedBench {
         }
         return keys;
     }
-
-    public static void main(String[] arg) {
-
+    
+    private static void benchmark() {
         int[] sizes = {100, 200, 400, 800, 1600, 3200, 6400};
 
         System.out.printf("# searching through an array of length n, time in ns\n");
         System.out.printf("#%7s%8s%8s%14s\n", "n", "linear", "binary", "even-better");
-        for ( int n : sizes) {
-
+        for (int n : sizes) {
             int loop = 10000;
-
             int[] array1 = sorted(n);
             int[] array2 = sorted(n);
             int[] index = keys(loop, n);
 
             System.out.printf("%8d", n);
-
-            float k = 1000;
-
-            float min = Float.POSITIVE_INFINITY;
-
-            for (int i = 0; i < k; i++) {
-                long t0 = System.nanoTime();
-                linear(array1, index);
-                long t1 = System.nanoTime();
-                float t = (t1 - t0);
-                if (t < min)
-                    min = t;
-            }
-
-            System.out.printf("%8.0f", (min/loop));
-
-            min = Float.POSITIVE_INFINITY;
-
-            for (int i = 0; i < k; i++) {
-                long t0 = System.nanoTime();
-                binary(array1, index);
-                long t1 = System.nanoTime();
-                float t = (t1 - t0);
-                if (t < min)
-                    min = t;
-            }
-
-            System.out.printf("%8.0f", (min/loop));
-
-            min = Float.POSITIVE_INFINITY;
-
-            for (int i = 0; i < 5; i++) {
-                long t0 = System.nanoTime();
-                evenBetter(array1, array2);
-                long t1 = System.nanoTime();
-                float t = (t1 - t0);
-                if (t < min)
-                    min = t;
-            }
-
-            float result = (min/loop);
-
+            restoreMin();
+            float min1 = benchmarkLinear(array1, index);
+            System.out.printf("%8.0f", (min1/loop));
+            restoreMin();
+            float min2 = benchmarkBinary(array1, index);
+            System.out.printf("%8.0f", (min2/loop));
+            restoreMin();
+            float min3 = benchmarkEvenBetter(array1, array2);
+            float result = (min3/loop);
             System.out.printf("%8.0f\n", result);
         }
+    }
+    private static long takeTimer() {
+        return System.nanoTime();
+    }
+    private static float benchmarkLinear(int[] array, int[] keys) {
+        for (int i = 0; i < tries; i++) {
+            long t0 = takeTimer();
+            linear(array, keys);
+            long t1 = takeTimer();
+            float t = (t1 - t0);
+            if (t < min)
+                min = t;
+        }
+        return min;
+    }
+    private static float benchmarkBinary(int[] array1, int[] array2) {
+        for (int i = 0; i < tries; i++) {
+            long t0 = takeTimer();
+            binary(array1, array2);
+            long t1 = takeTimer();
+            float t = (t1 - t0);
+            if (t < min)
+                min = t;
+        }
+        return min;
+    }
+    private static float benchmarkEvenBetter(int[] array1, int[] array2) {
+        for (int i = 0; i < tries; i++) {
+            long t0 = takeTimer();
+            evenBetter(array1, array2);
+            long t1 = takeTimer();
+            float t = (t1 - t0);
+            if (t < min)
+                min = t;
+        }
+        return min;
+    }
+
+    private static void restoreMin() {
+        min = Float.POSITIVE_INFINITY;
     }
 }
