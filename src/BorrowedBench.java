@@ -47,10 +47,11 @@ class BorrowedBench {
     }
     
     private static void benchmark() {
-        int[] sizes = {100, 200, 400, 800, 1600, 3200, 6400};
+        int[] sizes = {100, 200, 400, 800, 1600};
 
         System.out.printf("# searching through an array of length n, time in ns\n");
         System.out.printf("#%7s%8s%8s%14s\n", "n", "linear", "binary", "even-better");
+
         for (int n : sizes) {
             int loop = 10000;
             int[] array1 = sorted(n);
@@ -66,8 +67,9 @@ class BorrowedBench {
             System.out.printf("%8.0f", (min2/loop));
             restoreMin();
             float min3 = benchmarkEvenBetter(array1, array2);
-            float result = (min3/loop);
-            System.out.printf("%8.0f\n", result);
+            float result = (min3);
+            //System.out.printf("%8.0f\n", result);
+            System.out.println("    " + result);
         }
     }
     private static long takeTimer() {
