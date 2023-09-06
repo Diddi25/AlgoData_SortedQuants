@@ -36,6 +36,13 @@ class BorrowedBench {
         }
         return array;
     }
+    public static int[] unsorted(int n) {
+        int[] array = new int[n];
+        for (int i = 0; i < n ; i++) {
+            array[i] = new Random().nextInt(10);
+        }
+        return array;
+    }
 
     public static int[] generateSearchObjects(int loop, int n) {
         Random random = new Random();
@@ -47,21 +54,25 @@ class BorrowedBench {
     }
     
     private static void benchmark() {
-        int[] sizes = {100, 200, 400, 800, 1600};
+        int[] sizes = {100, 200, 400, 800, 1600, 3200, 6400};
 
         System.out.printf("# searching through an array of length n, time in ns\n");
-        System.out.printf("#%7s%8s%8s%14s\n", "n", "linear", "binary", "even-better");
+        System.out.printf("#%18s%18s%8s%8s%14s\n", "n", "linear sorted", "linear unsorted", "binary", "even-better");
 
         for (int n : sizes) {
             int loop = 10000;
             int[] array1 = sorted(n);
             int[] array2 = sorted(n);
+            int[] array3 = unsorted(n);
             int[] searchObjects = generateSearchObjects(loop, n);
 
             System.out.printf("%8d", n);
             restoreMin();
-            float min1 = benchmarkLinear(array1, searchObjects);
+            float min1 = benchmarkLinearSorted(array1, searchObjects);
             System.out.printf("%8.0f", (min1/loop));
+            restoreMin();
+            float min4 = benchmarkLinearUnsorted(array3, searchObjects);
+            System.out.printf("%8.0f", (min4/loop));
             restoreMin();
             float min2 = benchmarkBinary(array1, searchObjects);
             System.out.printf("%8.0f", (min2/loop));
@@ -75,7 +86,18 @@ class BorrowedBench {
     private static long takeTimer() {
         return System.nanoTime();
     }
-    private static float benchmarkLinear(int[] array, int[] searchObjects) {
+    private static float benchmarkLinearSorted(int[] array, int[] searchObjects) {
+        for (int i = 0; i < tries; i++) {
+            long t0 = takeTimer();
+            linear(array, searchObjects);
+            long t1 = takeTimer();
+            float t = (t1 - t0);
+            if (t < min)
+                min = t;
+        }
+        return min;
+    }
+    private static float benchmarkLinearUnsorted(int[] array, int[] searchObjects) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
             linear(array, searchObjects);
