@@ -9,15 +9,15 @@ class BorrowedBench {
         benchmark();
     }
 
-    private static void linear(int[] array, int[] index) {
-        for (int i = 0; i < index.length ; i++) {
-            Linear.search(array, index[i]);
+    private static void linear(int[] array, int[] searchObjects) {
+        for (int i = 0; i < searchObjects.length ; i++) {
+            Linear.search(array, searchObjects[i]);
         }
     }
 
-    private static void binary(int[] array, int[] index) {
-        for (int i = 0; i < index.length ; i++) {
-            BinarySearch.search(array, index[i]);
+    private static void binary(int[] array, int[] searchObjects) {
+        for (int i = 0; i < searchObjects.length ; i++) {
+            BinarySearch.search(array, searchObjects[i]);
         }
     }
 
@@ -37,13 +37,13 @@ class BorrowedBench {
         return array;
     }
 
-    public static int[] keys(int loop, int n) {
+    public static int[] generateSearchObjects(int loop, int n) {
         Random random = new Random();
-        int[] keys = new int[loop];
+        int[] generateSearchObjects = new int[loop];
         for (int i = 0; i < loop ; i++) {
-            keys[i] = random.nextInt(n*5);
+            generateSearchObjects[i] = random.nextInt(n*5);
         }
-        return keys;
+        return generateSearchObjects;
     }
     
     private static void benchmark() {
@@ -55,14 +55,14 @@ class BorrowedBench {
             int loop = 10000;
             int[] array1 = sorted(n);
             int[] array2 = sorted(n);
-            int[] index = keys(loop, n);
+            int[] searchObjects = generateSearchObjects(loop, n);
 
             System.out.printf("%8d", n);
             restoreMin();
-            float min1 = benchmarkLinear(array1, index);
+            float min1 = benchmarkLinear(array1, searchObjects);
             System.out.printf("%8.0f", (min1/loop));
             restoreMin();
-            float min2 = benchmarkBinary(array1, index);
+            float min2 = benchmarkBinary(array1, searchObjects);
             System.out.printf("%8.0f", (min2/loop));
             restoreMin();
             float min3 = benchmarkEvenBetter(array1, array2);
@@ -73,10 +73,10 @@ class BorrowedBench {
     private static long takeTimer() {
         return System.nanoTime();
     }
-    private static float benchmarkLinear(int[] array, int[] keys) {
+    private static float benchmarkLinear(int[] array, int[] searchObjects) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
-            linear(array, keys);
+            linear(array, searchObjects);
             long t1 = takeTimer();
             float t = (t1 - t0);
             if (t < min)
@@ -84,10 +84,10 @@ class BorrowedBench {
         }
         return min;
     }
-    private static float benchmarkBinary(int[] array1, int[] keys) {
+    private static float benchmarkBinary(int[] array1, int[] searchObjects) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
-            binary(array1, keys);
+            binary(array1, searchObjects);
             long t1 = takeTimer();
             float t = (t1 - t0);
             if (t < min)

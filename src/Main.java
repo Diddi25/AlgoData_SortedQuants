@@ -6,7 +6,7 @@ public class Main {
         int n = 1;
         int k = 5;
 
-        int[] testArray = BorrowedBench.keys(k, n);
+        int[] testArray = BorrowedBench.generateSearchObjects(k, n);
 
         for (int i = 0; i < k; i++) {
             System.out.println(testArray[i]);
