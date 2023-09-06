@@ -21,8 +21,8 @@ class BorrowedBench {
         }
     }
 
-    private static void evenBetter(int[] array1, int[] array2) {
-        EvenEvenBetterAlgorithm.linearDuplicatesSearch(array1, array2);
+    private static boolean evenBetter(int[] array1, int[] array2) {
+       return EvenEvenBetterAlgorithm.linearDuplicatesSearch(array1, array2);
     }
 
     public static int[] sorted(int n) {
@@ -84,10 +84,10 @@ class BorrowedBench {
         }
         return min;
     }
-    private static float benchmarkBinary(int[] array1, int[] array2) {
+    private static float benchmarkBinary(int[] array1, int[] keys) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
-            binary(array1, array2);
+            binary(array1, keys);
             long t1 = takeTimer();
             float t = (t1 - t0);
             if (t < min)
@@ -98,8 +98,10 @@ class BorrowedBench {
     private static float benchmarkEvenBetter(int[] array1, int[] array2) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
-            evenBetter(array1, array2);
+            boolean hej = evenBetter(array1, array2);
             long t1 = takeTimer();
+            //if (!hej)
+                //min = -1;
             float t = (t1 - t0);
             if (t < min)
                 min = t;
