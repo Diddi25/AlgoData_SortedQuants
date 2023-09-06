@@ -1,5 +1,5 @@
 public class BinarySearch {
-    public static boolean search(int[] array, int value) {
+    public static boolean search(int[] array, float value) {
         int min = 0;
         int max = array.length - 1;
 

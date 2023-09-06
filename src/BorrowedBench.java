@@ -9,19 +9,19 @@ class BorrowedBench {
         benchmark();
     }
 
-    private static void linear(int[] array, int[] index) {
+    private static void linear(int[] array, float[] index) {
         for (int i = 0; i < index.length ; i++) {
             Linear.search(array, index[i]);
         }
     }
 
-    private static void binary(int[] array, int[] index) {
+    private static void binary(int[] array, float[] index) {
         for (int i = 0; i < index.length ; i++) {
             BinarySearch.search(array, index[i]);
         }
     }
 
-    private static boolean evenBetter(int[] array1, int[] array2) {
+    private static long evenBetter(int[] array1, int[] array2) {
        return EvenEvenBetterAlgorithm.linearDuplicatesSearch(array1, array2);
     }
 
@@ -37,9 +37,9 @@ class BorrowedBench {
         return array;
     }
 
-    public static int[] keys(int loop, int n) {
+    public static float[] keys(int loop, int n) {
         Random random = new Random();
-        int[] keys = new int[loop];
+        float[] keys = new float[loop];
         for (int i = 0; i < loop ; i++) {
             keys[i] = random.nextInt(n*5);
         }
@@ -52,10 +52,10 @@ class BorrowedBench {
         System.out.printf("# searching through an array of length n, time in ns\n");
         System.out.printf("#%7s%8s%8s%14s\n", "n", "linear", "binary", "even-better");
         for (int n : sizes) {
-            int loop = 10000;
+            float loop = 10000;
             int[] array1 = sorted(n);
             int[] array2 = sorted(n);
-            int[] index = keys(loop, n);
+            float[] index = keys(10000, n);
 
             System.out.printf("%8d", n);
             restoreMin();
@@ -73,7 +73,7 @@ class BorrowedBench {
     private static long takeTimer() {
         return System.nanoTime();
     }
-    private static float benchmarkLinear(int[] array, int[] keys) {
+    private static float benchmarkLinear(int[] array, float[] keys) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
             linear(array, keys);
@@ -84,7 +84,7 @@ class BorrowedBench {
         }
         return min;
     }
-    private static float benchmarkBinary(int[] array1, int[] keys) {
+    private static float benchmarkBinary(int[] array1, float[] keys) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
             binary(array1, keys);
@@ -98,15 +98,15 @@ class BorrowedBench {
     private static float benchmarkEvenBetter(int[] array1, int[] array2) {
         for (int i = 0; i < tries; i++) {
             long t0 = takeTimer();
-            boolean hej = evenBetter(array1, array2);
-            long t1 = takeTimer();
+            return evenBetter(array1, array2);
+            //long t1 = takeTimer();
             //if (!hej)
                 //min = -1;
-            float t = (t1 - t0);
-            if (t < min)
-                min = t;
+            //float t = (t1 - t0);
+            //if (t < min)
+                //min = t;
         }
-        return min;
+        return -1;
     }
 
     private static void restoreMin() {
